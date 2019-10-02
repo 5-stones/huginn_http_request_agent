@@ -36,6 +36,27 @@ After the setup is done `rake spec` will only run the tests, without cloning the
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+## Release
+
+The standard release command for this project is:
+```
+npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease | from-git]
+```
+
+This command will:
+
+1. Generate/update the Changelog
+1. Bump the package version
+1. Tag & pushing the commit
+
+
+e.g.
+
+```
+npm version 1.2.17
+npm version patch // 1.2.17 -> 1.2.18
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/huginn_http_request_agent/fork )
