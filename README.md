@@ -1,8 +1,6 @@
 # HttpRequestAgent
 
-Welcome to your new agent gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/huginn_http_request_agent`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The Http Request Agent is intended to be an abstract agent that allows for the interaction of any http service.
 
 ## Installation
 
@@ -22,7 +20,7 @@ And then execute:
 
 ## Usage
 
-TODO: Write usage instructions here
+Instructions can be found in the agent's description: `lib/huginn_http_request_agent/http_request_agent.rb`
 
 ## Development
 
