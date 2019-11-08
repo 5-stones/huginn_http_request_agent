@@ -34,6 +34,7 @@ module Agents
           - `no_merge` - Setting this value to `true` will result in the incoming event, but still send the interpolated payload
           - `output_mode` - Setting this value to `merge` will result in the emitted Event being merged into the original contents of the received Event. Setting it to `clean` will result in no merge.
           - `emit_events` - Setting this to `true` will result in the server response being emitted as an Event which can be subsequently consumed by another agent (ex. to a WebsiteAgent for parsing of the response body)
+          - `log_requests` - Setting this to `true` will log the contents of the interpolated request object sent by this event.
 
         ### Content Type's:
 
@@ -93,7 +94,8 @@ module Agents
         'headers' => {},
         'emit_events' => 'true',
         'no_merge' => 'false',
-        'output_mode' => 'clean'
+        'output_mode' => 'clean',
+        'log_requests' => 'false'
       }
     end
 
@@ -138,6 +140,10 @@ module Agents
         errors.add(:base, "if provided, emit_events must be true or false")
       end
 
+      if options.has_key?('log_requests') && boolify(options['log_requests']).nil?
+        errors.add(:base, "If provided, log_requests must be true or false")
+      end
+
       validate_event_headers_options!
 
       unless %w[post get put delete patch].include?(method)
@@ -163,6 +169,7 @@ module Agents
       incoming_events.each do |event|
         interpolate_with(event) do
           outgoing = interpolated['payload'].presence || {}
+
           if boolify(interpolated['no_merge'])
             handle outgoing, event, headers(interpolated[:headers])
           else
@@ -222,6 +229,10 @@ module Agents
         end
       else
         error "Invalid method '#{method}'"
+      end
+
+      if boolify(interpolated['log_requests'])
+        log({ method: method, url: url, body: body, headers: headers })
       end
 
       response = faraday.run_request(method.to_sym, url, body, headers) { |request|
