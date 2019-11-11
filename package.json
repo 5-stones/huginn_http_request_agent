@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Huginn agent for HTTP requests",
   "scripts": {
-    "version": "npm run changelog && git add CHANGELOG.md",
-    "postversion": "git push && git push --tags",
+    "version": "npm run changelog && git add CHANGELOG.md && npm run version:gemspec",
+    "version:gemspec": "node version.js && git add huginn_http_request_agent.gemspec",
+    "gem:build": "gem build huginn_http_request_agent.gemspec",
+    "gem:push": "node push.js",
+    "gem:release": "npm run gem:build && npm run gem:push",
+    "postversion": "git push && git push --tags && npm run gem:release",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "author": "Jacob Spizziri <jspizziri@weare5stones.com>",
