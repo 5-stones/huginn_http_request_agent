@@ -1,9 +1,18 @@
-# 1.0.0 (2019-10-02)
+# [1.1.0](https://github.com/5-stones/huginn_http_request_agent/compare/v1.0.0...v1.1.0) (2019-11-11)
 
 
 ### Features
 
-* **README.md, http_request_agent.rb:** Add basic documentation and functionality cf55a44
+* **http_request_agent.rb:** Add optional request logging ([aee2476](https://github.com/5-stones/huginn_http_request_agent/commit/aee2476))
+
+
+
+# [1.0.0](https://github.com/5-stones/huginn_http_request_agent/compare/cf55a44...v1.0.0) (2019-10-02)
+
+
+### Features
+
+* **README.md, http_request_agent.rb:** Add basic documentation and functionality ([cf55a44](https://github.com/5-stones/huginn_http_request_agent/commit/cf55a44))
 
 
 

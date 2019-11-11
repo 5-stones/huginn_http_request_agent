@@ -1,6 +1,6 @@
 {
   "name": "huginn_http_request_agent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Huginn agent for HTTP requests",
   "scripts": {
     "version": "npm run changelog && git add CHANGELOG.md && npm run version:gemspec",
