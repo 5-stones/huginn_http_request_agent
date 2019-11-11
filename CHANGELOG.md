@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/5-stones/huginn_http_request_agent/compare/v1.1.0...v1.1.1) (2019-11-11)
+
+
+### Bug Fixes
+
+* **gemspec:** fix issue with missing details in gemspec ([5c21684](https://github.com/5-stones/huginn_http_request_agent/commit/5c21684))
+
+
+
 # [1.1.0](https://github.com/5-stones/huginn_http_request_agent/compare/v1.0.0...v1.1.0) (2019-11-11)
 
 
