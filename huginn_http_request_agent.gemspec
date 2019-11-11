@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Jacob Spizziri"]
   spec.email         = ["jspizziri@weare5stones.com"]
 
-  spec.summary       = %q{Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = %q{The Http Request Agent is intended to be an abstract agent that allows for the interaction of any http service.}
+  spec.description   = %q{The Http Request Agent is intended to be an abstract agent that allows for the interaction of any http service.}
 
-  spec.homepage      = "https://github.com/[my-github-username]/huginn_http_request_agent"
+  spec.homepage      = "https://github.com/5-stones/huginn_http_request_agent"
 
   spec.license       = "MIT"
 
