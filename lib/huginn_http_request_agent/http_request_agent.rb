@@ -42,11 +42,18 @@ module Agents
 
           - `json` to send JSON instead
           - `xml` to send XML, where the name of the root element may be specified using `xml_root`
+          - All other `content_type`'s will be serialized as a string
 
         By default, non-GETs will be sent with form encoding (`application/json`).
 
-        When `content_type` contains a [MIME](https://en.wikipedia.org/wiki/Media_type) type, and `payload` is a string, its interpolated value will be sent as a string in the HTTP request's body and the request's `Content-Type` HTTP header will be set to `content_type`.
+        The `content_type` field will default the `Content-Type` header if it is not explicitly set in the following manner:
 
+          - if `Content-Type` is set use value
+          - else if `content_type==json` then `Content-Type=application/json`
+          - else if `content_type==xml` then `Content-Type=application/xml`
+          - else `Content-Type=content_type`
+
+        This allows you fine grained control over the mime type being used.
 
         ### Response
 
@@ -194,7 +201,7 @@ module Agents
 
         case content_type
         when 'json'
-          headers['Content-Type'] = 'application/json; charset=utf-8'
+          headers['Content-Type'] ||= 'application/json; charset=utf-8'
           url = faraday.build_url(url, data.compact)
         else
           params = data
@@ -216,13 +223,13 @@ module Agents
 
         case content_type
         when 'json'
-          headers['Content-Type'] = 'application/json; charset=utf-8'
+          headers['Content-Type'] ||= 'application/json; charset=utf-8'
           body = data.to_json
         when 'xml'
-          headers['Content-Type'] = 'text/xml; charset=utf-8'
+          headers['Content-Type'] ||= 'text/xml; charset=utf-8'
           body = data.to_xml(root: (interpolated(event.payload)[:xml_root] || 'post'))
         when MIME_RE
-          headers['Content-Type'] = content_type
+          headers['Content-Type'] ||= content_type
           body = data.to_s
         else
           body = data
