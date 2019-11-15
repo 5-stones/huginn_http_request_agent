@@ -1,3 +1,12 @@
+# [1.2.0](https://github.com/5-stones/huginn_http_request_agent/compare/v1.1.1...v1.2.0) (2019-11-15)
+
+
+### Features
+
+* **Agents::HttpRequestAgent:** add the ability to explicitly set the Content-Type header ([79a09de](https://github.com/5-stones/huginn_http_request_agent/commit/79a09de))
+
+
+
 ## [1.1.1](https://github.com/5-stones/huginn_http_request_agent/compare/v1.1.0...v1.1.1) (2019-11-11)
 
 
