@@ -242,34 +242,68 @@ module Agents
         log({ method: method, url: url, body: body, headers: headers })
       end
 
-      response = faraday.run_request(method.to_sym, url, body, headers) { |request|
+      output_event = interpolated['output_mode'].to_s == 'merge' ? event.payload.dup : {}
 
-        # open/read timeout in seconds
-        if interpolated['timeout'].to_i
-            request.options.timeout = interpolated['timeout'].to_i
+      begin
+
+        response = faraday.run_request(method.to_sym, url, body, headers) { |request|
+
+          # open/read timeout in seconds
+          if interpolated['timeout'].to_i
+              request.options.timeout = interpolated['timeout'].to_i
+          end
+
+          # connection open timeout in seconds
+          if interpolated['open_timeout'].to_i
+              request.options.open_timeout = interpolated['open_timeout'].to_i
+          end
+
+          request.params.update(params) if params
+        }
+
+        if boolify(interpolated['emit_events'])
+          create_event payload: output_event.merge(
+            body: response.body,
+            status: response.status
+          ).merge(
+            event_headers_payload(response.headers)
+          )
         end
-
-        # connection open timeout in seconds
-        if interpolated['open_timeout'].to_i
-            request.options.open_timeout = interpolated['open_timeout'].to_i
-        end
-
-        request.params.update(params) if params
-      }
-
-      if boolify(interpolated['emit_events'])
-        new_event = interpolated['output_mode'].to_s == 'merge' ? event.payload.dup : {}
-        create_event payload: new_event.merge(
-          body: response.body,
-          status: response.status
-        ).merge(
-          event_headers_payload(response.headers)
-        )
+      rescue => e
+        handle_req_error(e, output_event, url)
       end
     end
 
     def event_headers_key
       super || 'headers'
     end
-  end
+
+    def handle_req_error( error, output_payload, endpoint )
+
+      error_status = defined?(error.response_status)  && !error.response_status.nil? ? error.response_status : 500
+
+      #  NOTE:  `options['payload']`` below is intentionally _NOT_ interpolated.
+      #  The primary reason for this is that it may contain sensitive values
+      #  By passing the raw option, we will see liquid placeholders instead.
+      #  This wiill assist with debugging while also not exposing secrets.
+
+      log({
+        error_message: error.message,
+        status_code: error_status,
+        endpoint: endpoint,
+        payload_options: options['payload'],
+      })
+
+      if boolify(interpolated['emit_events'])
+        create_event payload: output_payload.merge(
+          status: error_status,
+          error_message: error.message,
+          endpoint: endpoint,
+          payload_options: options['payload'],
+        )
+      end
+
+    end
+
+  end # <-- End of class
 end
